@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>maven_pdp</artifactId>
+        <groupId>com.epam.automation</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <dependencies>
+        <dependency>
+            <groupId>com.epam.automation</groupId>
+            <artifactId>api_tests</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.automation</groupId>
+            <artifactId>api_tests</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <!--<classifier>tests</classifier>-->
+            <scope>test</scope>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.epam.automation</groupId>-->
+            <!--<artifactId>ui_tests</artifactId>-->
+            <!--<version>1.0-SNAPSHOT</version>-->
+            <!--<classifier>tests</classifier>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+    <artifactId>runner</artifactId>
+<build>
+
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.19.1</version>
+            <executions>
+                <execution>
+                    <id>int</id>
+                    <goals>
+                        <goal>integration-test</goal>
+                        <goal>verify</goal>
+                    </goals>
+                    <configuration>
+                        <dependenciesToScan>
+
+                            <dependency>com.epam.automation:api_tests</dependency>
+                            <!--<dependency>com.epam.automation:ui_tests</dependency>-->
+                        </dependenciesToScan>
+<includes>
+    <include>**/Test*</include>
+</includes>
+                        <skipTests>${skip.integration.tests}</skipTests>
+
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.0</version>
+            <configuration>
+                <dependenciesToScan>
+
+                    <dependency>com.epam.automation:api_tests</dependency>
+                    <!--<dependency>com.epam.automation:ui_tests</dependency>-->
+                </dependenciesToScan>
+                <includes>
+                    <include>com.epam.automation.api.UnitTests</include>
+                </includes>
+                <!--<excludedGroups>com.epam.automation.api.Integration</excludedGroups>-->
+                <!--<excludedGroups>com.epam.automation.ui.Integration</excludedGroups>-->
+                <skipTests>${skip.unit.tests}</skipTests>
+
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+</project>
