@@ -12,10 +12,8 @@ public class RestApiObject {
 
 
     public String post(String url) {
-
-        try {String response = printResponse(fileNamePost);
-
-            return "POST: " + url + "/" + response;
+        try {
+            return "POST: " + url + "/" + printResponse(fileNamePost);
         } catch (IOException e) {
             e.printStackTrace();
             return "Sorry, IOException";
@@ -23,14 +21,13 @@ public class RestApiObject {
     }
 
     public String get(String url) {
-        return "GET: " + url + "/response from method get";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileNameGet);
+        return "GET: " + url + "/" + convertToStringFromPdf(inputStream);
     }
-    
+
     public int delete() {
         return 5;
     }
-
-
 
 
     public String printResponse(String file) throws IOException {
@@ -40,20 +37,22 @@ public class RestApiObject {
         return line;
     }
 
-    public String convertToStringFromPdf(InputStream pdf) throws IOException {
+    public String convertToStringFromPdf(InputStream pdf) {
         PDDocument document = null;
         try {
-            String separator = " ";
             document = PDDocument.load(pdf);
             PDFTextStripper stripper = new PDFTextStripper();
-            stripper.setWordSeparator(separator);
-            stripper.setSortByPosition(true);
-            stripper.setShouldSeparateByBeads(true);
             String result = stripper.getText(document).trim();
             return result;
+        } catch (IOException e) {
+            return "Problem with converting file";
         } finally {
             if (document != null) {
-                document.close();
+                try {
+                    document.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
